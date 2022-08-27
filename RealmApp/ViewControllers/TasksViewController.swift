@@ -9,6 +9,11 @@
 import UIKit
 import RealmSwift
 
+enum Section: Int {
+    case current
+    case completed
+}
+
 class TasksViewController: UITableViewController {
     
     var taskList: TaskList!
@@ -26,8 +31,14 @@ class TasksViewController: UITableViewController {
             action: #selector(addButtonPressed)
         )
         navigationItem.rightBarButtonItems = [addButton, editButtonItem]
+        filterTask()
+    }
+    
+    private func filterTask() {
         currentTasks = taskList.tasks.filter("isComplete = false")
         completedTasks = taskList.tasks.filter("isComplete = true")
+        
+        tableView.reloadData()
     }
     
     // MARK: - Table view data source
@@ -36,7 +47,13 @@ class TasksViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        section == 0 ? currentTasks.count : completedTasks.count
+        guard let section = Section(rawValue: section) else { fatalError() }
+        switch section {
+        case .current:
+            return currentTasks.count
+        case .completed:
+            return completedTasks.count
+        }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -46,7 +63,8 @@ class TasksViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TasksCell", for: indexPath)
         var content = cell.defaultContentConfiguration()
-        let task = indexPath.section == 0 ? currentTasks[indexPath.row] : completedTasks[indexPath.row]
+        guard let section = Section(rawValue: indexPath.section) else { fatalError() }
+        let task = section.rawValue == 0 ? currentTasks[indexPath.row] : completedTasks[indexPath.row]
         content.text = task.name
         content.secondaryText = task.note
         cell.contentConfiguration = content
@@ -62,10 +80,13 @@ class TasksViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let section = Section(rawValue: indexPath.section) else { return UISwipeActionsConfiguration() }
         let task: Task
-        if indexPath.section == 0 {
+        
+        switch section {
+        case .current:
             task = currentTasks[indexPath.row]
-        } else {
+        case .completed:
             task = completedTasks[indexPath.row]
         }
         
@@ -82,7 +103,18 @@ class TasksViewController: UITableViewController {
             isDone(true)
         }
         
-        let doneAction = UIContextualAction(style: .normal, title: "Done") { _, _, isDone in
+        let title = section.rawValue == 0 ? "Done" : "Undone"
+        let doneAction = UIContextualAction(style: .normal, title: title) { _, _, isDone in
+            switch section {
+            case .current:
+                StorageManager.shared.doneTask(task) { [weak self] in
+                    self?.filterTask()
+                }
+            case .completed:
+                StorageManager.shared.undoneTask(task) { [weak self] in
+                    self?.filterTask()
+                }
+            }
             
             isDone(true)
         }
