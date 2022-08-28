@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import SwiftUI
 
 class StorageManager {
     static let shared = StorageManager()
@@ -73,14 +74,7 @@ class StorageManager {
     
     func doneTask(_ task: Task, completion: (() -> ())) {
         write {
-            task.setValue(true, forKey: "isComplete")
-            completion()
-        }
-    }
-    
-    func undoneTask(_ task: Task, completion: (() -> ())) {
-        write {
-            task.setValue(false, forKey: "isComplete")
+            task.isComplete.toggle()
             completion()
         }
     }

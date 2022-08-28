@@ -46,7 +46,7 @@ class TaskListViewController: UITableViewController {
         if taskList.tasks.isEmpty {
             content.secondaryText = "0"
         } else if taskList.tasks.filter("isComplete = false").isEmpty {
-            content.secondaryText = "✅"
+            cell.accessoryType = .checkmark
         } else {
             content.secondaryText = "\(taskList.tasks.filter("isComplete = false").count)"
         }
@@ -92,11 +92,7 @@ class TaskListViewController: UITableViewController {
     }
 
     @IBAction func sortingList(_ sender: UISegmentedControl) {
-        if sender.selectedSegmentIndex == 0 {
-            self.taskLists = taskLists.sorted(byKeyPath: "name")
-        } else {
-            self.taskLists = taskLists.sorted(byKeyPath: "date", ascending: false)
-        }
+        taskLists = sender.selectedSegmentIndex == 0 ? taskLists.sorted(byKeyPath: "name") : taskLists.sorted(byKeyPath: "date", ascending: false)
         
         tableView.reloadData()
     }

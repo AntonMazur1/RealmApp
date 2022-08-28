@@ -20,7 +20,7 @@ class TasksViewController: UITableViewController {
     
     private var currentTasks: Results<Task>!
     private var completedTasks: Results<Task>!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = taskList.name
@@ -32,13 +32,6 @@ class TasksViewController: UITableViewController {
         )
         navigationItem.rightBarButtonItems = [addButton, editButtonItem]
         filterTask()
-    }
-    
-    private func filterTask() {
-        currentTasks = taskList.tasks.filter("isComplete = false")
-        completedTasks = taskList.tasks.filter("isComplete = true")
-        
-        tableView.reloadData()
     }
     
     // MARK: - Table view data source
@@ -105,18 +98,12 @@ class TasksViewController: UITableViewController {
         
         let title = section.rawValue == 0 ? "Done" : "Undone"
         let doneAction = UIContextualAction(style: .normal, title: title) { _, _, isDone in
-            switch section {
-            case .current:
-                StorageManager.shared.doneTask(task) { [weak self] in
-                    self?.filterTask()
-                }
-            case .completed:
-                StorageManager.shared.undoneTask(task) { [weak self] in
-                    self?.filterTask()
-                }
+            StorageManager.shared.doneTask(task) { [weak self] in
+                self?.filterTask()
+                section.rawValue == 0 ? tableView.moveRow(at: indexPath, to: IndexPath(row: 0, section: 1)) : tableView.moveRow(at: indexPath, to: IndexPath(row: 0, section: 0))
+                
+                isDone(true)
             }
-            
-            isDone(true)
         }
         
         editAction.backgroundColor = .orange
@@ -124,7 +111,7 @@ class TasksViewController: UITableViewController {
         
         return UISwipeActionsConfiguration(actions: [doneAction, editAction, deleteAction])
     }
-
+    
 }
 
 extension TasksViewController {
@@ -150,5 +137,10 @@ extension TasksViewController {
             let rowIndex = IndexPath(row: currentTasks.index(of: task) ?? 0, section: 0)
             tableView.insertRows(at: [rowIndex], with: .automatic)
         }
+    }
+    
+    private func filterTask() {
+        currentTasks = taskList.tasks.filter("isComplete = false")
+        completedTasks = taskList.tasks.filter("isComplete = true")
     }
 }
