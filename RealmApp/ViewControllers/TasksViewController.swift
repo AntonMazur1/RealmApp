@@ -100,7 +100,12 @@ class TasksViewController: UITableViewController {
         let doneAction = UIContextualAction(style: .normal, title: title) { _, _, isDone in
             StorageManager.shared.doneTask(task) { [weak self] in
                 self?.filterTask()
-                section.rawValue == 0 ? tableView.moveRow(at: indexPath, to: IndexPath(row: 0, section: 1)) : tableView.moveRow(at: indexPath, to: IndexPath(row: 0, section: 0))
+                
+                let destinationIndex = section.rawValue == 0
+                ? IndexPath(row: self?.completedTasks.index(of: task ) ?? 0, section: 1)
+                : IndexPath(row: self?.currentTasks.index(of: task) ?? 0, section: 0)
+                
+                tableView.moveRow(at: indexPath, to: destinationIndex)
                 
                 isDone(true)
             }

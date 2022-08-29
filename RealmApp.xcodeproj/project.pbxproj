@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8983EC3B28B7B27A002E9E25 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 8983EC3A28B7B27A002E9E25 /* Realm */; };
 		8983EC3D28B7B27A002E9E25 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8983EC3C28B7B27A002E9E25 /* RealmSwift */; };
+		89CBF4E928BD051000166A60 /* Extension + UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89CBF4E828BD051000166A60 /* Extension + UITableViewCell.swift */; };
 		A804828427103A010095A493 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A804828327103A010095A493 /* DataManager.swift */; };
 		A804828627103A100095A493 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A804828527103A100095A493 /* StorageManager.swift */; };
 		A804828827103BFD0095A493 /* TaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A804828727103BFD0095A493 /* TaskList.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		89CBF4E828BD051000166A60 /* Extension + UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension + UITableViewCell.swift"; sourceTree = "<group>"; };
 		A804828327103A010095A493 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		A804828527103A100095A493 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		A804828727103BFD0095A493 /* TaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskList.swift; sourceTree = "<group>"; };
@@ -49,6 +51,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		89CBF4E728BD050200166A60 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				89CBF4E828BD051000166A60 /* Extension + UITableViewCell.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		A81BC31C256FED21002D9595 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -78,6 +88,7 @@
 		A872A10D20E9D82400ECE2BA /* RealmApp */ = {
 			isa = PBXGroup;
 			children = (
+				89CBF4E728BD050200166A60 /* Extensions */,
 				A81BC31C256FED21002D9595 /* ViewControllers */,
 				A8969B33270F34B700F7DED0 /* Models */,
 				A8969B34270F34C900F7DED0 /* Services */,
@@ -218,6 +229,7 @@
 				A804828627103A100095A493 /* StorageManager.swift in Sources */,
 				A872A12120E9D87400ECE2BA /* TaskListViewController.swift in Sources */,
 				A872A12320E9D88E00ECE2BA /* TasksViewController.swift in Sources */,
+				89CBF4E928BD051000166A60 /* Extension + UITableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
